@@ -9,8 +9,10 @@
     , app = connect()
     , server
     , port = process.argv[2] || 0
-    , local = {
+    , pConf = require('./provider-config')
+    , lConf = {
         protocol: "http"
+      //, host: "oauth2consumer.helloworld3000.com:3001"
       , host: "oauth2consumer.helloworld3000.com:3001"
       }
     , opts = { clientId: 'abc123', clientSecret: 'ssh-secret' }
@@ -43,7 +45,7 @@
       // see https://github.com/jaredhanson/oauth2orize/blob/master/examples/all-grants/db/clients.js
       clientID: opts.clientId
     , clientSecret: opts.clientSecret
-    , callbackURL: local.protocol + "://" + local.host + "/auth/example-oauth2orize/callback"
+    , callbackURL: lConf.protocol + "://" + lConf.host + "/auth/example-oauth2orize/callback"
     }
   , function (accessToken, refreshToken, profile, done) {
       User.findOrCreate({ profile: profile }, function (err, user) {
@@ -58,7 +60,7 @@
       if (false) { next(); }
       var request = require('request')
         , options = {
-            url: 'http://oauth2provider.foobar3000.com/api/userinfo'
+            url: pConf.protocol + '://' + pConf.host + '/api/userinfo'
           , headers: {
               'Authorization': 'Bearer ' + req.user.accessToken
             }

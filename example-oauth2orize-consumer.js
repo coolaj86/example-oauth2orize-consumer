@@ -6,8 +6,7 @@
 var util = require('util')
   , OAuth2Strategy = require('passport-oauth').OAuth2Strategy
   , InternalOAuthError = require('passport-oauth').InternalOAuthError
-  , protocol = 'http'
-  , host = 'oauth2provider.foobar3000.com:3002'
+  , pConf = require('./provider-config')
   ;
 
 /**
@@ -46,8 +45,8 @@ var util = require('util')
  */
 function Strategy(options, verify) {
   options = options || {};
-  options.authorizationURL = options.authorizationURL || (protocol + '://' + host + '/dialog/authorize');
-  options.tokenURL = options.tokenURL || (protocol + '://' + host + '/oauth/token');
+  options.authorizationURL = options.authorizationURL || (pConf.protocol + '://' + pConf.host + '/dialog/authorize');
+  options.tokenURL = options.tokenURL || (pConf.protocol + '://' + pConf.host + '/oauth/token');
   
   OAuth2Strategy.call(this, options, verify);
   this.name = 'example-oauth2orize';
@@ -74,7 +73,7 @@ util.inherits(Strategy, OAuth2Strategy);
  * @api protected
  */
 Strategy.prototype.userProfile = function(accessToken, done) {
-  this._oauth2.get(protocol + '://' + host + '/api/userinfo', accessToken, function (err, body/*, res*/) {
+  this._oauth2.get(pConf.protocol + '://' + pConf.host + '/api/userinfo', accessToken, function (err, body/*, res*/) {
     if (err) { return done(new InternalOAuthError('failed to fetch user profile', err)); }
     
     try {
