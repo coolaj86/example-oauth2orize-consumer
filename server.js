@@ -13,9 +13,10 @@
     , lConf = {
         protocol: "http"
       //, host: "oauth2consumer.helloworld3000.com:3001"
-      , host: "oauth2consumer.helloworld3000.com:3001"
+      , host: "wardsteward.org:3002"
       }
-    , opts = { clientId: 'abc123', clientSecret: 'ssh-secret' }
+      // for Ward Steward
+    , opts = require('./oauth-config')
     ;
 
   if (!connect.router) {
