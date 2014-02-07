@@ -58,10 +58,11 @@
 
   function route(rest) {
     rest.get('/externalapi/account', function (req, res, next) {
+      console.log('[using accessToken]', req.user.accessToken);
       if (false) { next(); }
       var request = require('request')
         , options = {
-            url: pConf.protocol + '://' + pConf.host + '/api/userinfo'
+            url: pConf.protocol + '://' + pConf.host + '/api/ldsorg/me'
           , headers: {
               'Authorization': 'Bearer ' + req.user.accessToken
             }
