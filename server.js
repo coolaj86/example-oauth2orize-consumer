@@ -5,11 +5,14 @@
     , path = require('path')
     , passport = require('passport')
     , User = require('./user')
-    , ExampleOauth2orizeConsumerStrategy = require('./example-oauth2orize-consumer').Strategy
+    , LdsAuthStrategy = require('passport-ldsauth').Strategy
     , app = connect()
     , server
     , port = process.argv[2] || 0
-    , pConf = require('./provider-config')
+    , pConf = {
+        protocol: "http"
+      , host: "ldsauth.org"
+      }
     , lConf = {
         protocol: "http"
       //, host: "oauth2consumer.helloworld3000.com:3001"
@@ -42,7 +45,7 @@
     done(null, user);
   });
 
-  passport.use(new ExampleOauth2orizeConsumerStrategy({
+  passport.use(new LdsAuthStrategy({
       // see https://github.com/jaredhanson/oauth2orize/blob/master/examples/all-grants/db/clients.js
       clientID: opts.clientId
     , clientSecret: opts.clientSecret
@@ -81,14 +84,14 @@
     });
     /*
     */
-    rest.get('/auth/example-oauth2orize', passport.authenticate('example-oauth2orize', { scope: ['email'] }));
+    rest.get('/auth/example-oauth2orize', passport.authenticate('ldsauth', { scope: ['email'] }));
     rest.get('/auth/example-oauth2orize/callback'
       //passport.authenticate('facebook', { successRedirect: '/close.html?accessToken=blar',
       //                                    failureRedirect: '/close.html?error=foo' }));
-    , passport.authenticate('example-oauth2orize', { failureRedirect: '/close.html?error=foo' })
+    , passport.authenticate('ldsauth', { failureRedirect: '/close.html?error=foo' })
     );
     rest.get('/auth/example-oauth2orize/callback'
-    , function (req, res, next) {
+    , function (req, res) {
         console.log('req.session');
         console.log(req.session);
         var url = '/success.html' // + '?type=fb'

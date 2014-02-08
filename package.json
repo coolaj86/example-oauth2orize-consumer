@@ -1,19 +1,20 @@
 {
-  "name": "oauth2orize-consumer-example",
+  "name": "ward-steward",
   "version": "0.1.0",
-  "description": "An example consumer to be used with oauth2orize",
+  "description": "A Tool for YSA wards to track home and visiting teaching",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "",
-  "author": "",
+  "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.com)",
   "license": "Apache2",
   "dependencies": {
     "passport-http-bearer": "~1.0.1",
     "connect": "~2.12.0",
     "connect_router": "~1.8.7",
     "passport": "~0.1.17",
-    "passport-oauth": "~1.0.0"
+    "passport-oauth": "~1.0.0",
+    "passport-ldsauth": "~0.9.0"
   }
 }
