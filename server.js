@@ -5,21 +5,15 @@
     , path = require('path')
     , passport = require('passport')
     , User = require('./user')
-    , LdsAuthStrategy = require('passport-ldsauth').Strategy
+    , ExampleStrategy = require('./passport-example').Strategy
     , app = connect()
     , server
-    , port = process.argv[2] || 0
-    , pConf = {
-        protocol: "http"
-      , host: "ldsauth.org"
-      }
-    , lConf = {
-        protocol: "http"
-      //, host: "oauth2consumer.helloworld3000.com:3001"
-      , host: "wardsteward.org:3002"
-      }
+    , port = process.argv[2] || 3002
+    , oauthConfig = require('./oauth-config')
+    , pConf = oauthConfig.provider
+    , lConf = oauthConfig.consumer
       // for Ward Steward
-    , opts = require('./oauth-config')
+    , opts = require('./oauth-consumer-config')
     ;
 
   if (!connect.router) {
@@ -45,7 +39,7 @@
     done(null, user);
   });
 
-  passport.use(new LdsAuthStrategy({
+  passport.use(new ExampleStrategy({
       // see https://github.com/jaredhanson/oauth2orize/blob/master/examples/all-grants/db/clients.js
       clientID: opts.clientId
     , clientSecret: opts.clientSecret
@@ -65,7 +59,7 @@
       if (false) { next(); }
       var request = require('request')
         , options = {
-            url: pConf.protocol + '://' + pConf.host + '/api/ldsorg/me'
+            url: pConf.protocol + '://' + pConf.host + '/api/exampleauth/me'
           , headers: {
               'Authorization': 'Bearer ' + req.user.accessToken
             }
@@ -84,11 +78,11 @@
     });
     /*
     */
-    rest.get('/auth/example-oauth2orize', passport.authenticate('ldsauth', { scope: ['email'] }));
+    rest.get('/auth/example-oauth2orize', passport.authenticate('exampleauth', { scope: ['email'] }));
     rest.get('/auth/example-oauth2orize/callback'
       //passport.authenticate('facebook', { successRedirect: '/close.html?accessToken=blar',
       //                                    failureRedirect: '/close.html?error=foo' }));
-    , passport.authenticate('ldsauth', { failureRedirect: '/close.html?error=foo' })
+    , passport.authenticate('exampleauth', { failureRedirect: '/close.html?error=foo' })
     );
     rest.get('/auth/example-oauth2orize/callback'
     , function (req, res) {
