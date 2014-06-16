@@ -5,7 +5,7 @@
     , path = require('path')
     , passport = require('passport')
     , User = require('./user')
-    , ExampleStrategy = require('./passport-example').Strategy
+    , ExampleStrategy = require('./passport-example/strategy').Strategy
     , app = connect()
     , server
     , port = process.argv[2] || 3002
